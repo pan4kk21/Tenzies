@@ -17,7 +17,7 @@ export default function App() {
             )
     }
 
-    const diceComponents = dice.map(die => <Die key={die.id} value={die.value}/>)
+    const diceComponents = dice.map(die => <Die isHeld={die.isHeld} key={die.id} value={die.value}/>)
 
     return (
         <main>
