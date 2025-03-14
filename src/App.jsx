@@ -18,6 +18,9 @@ export default function App() {
             <div className="dice-container">
                 {diceComponents}
             </div>
+            <button className="roll-dice"
+                onClick={() => setDiceNumbers(generateDiceNumbers)}
+            >Roll</button>
         </main>
     )
 }
