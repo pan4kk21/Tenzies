@@ -1,17 +1,23 @@
 import Die from "./components/Die.jsx"
-import { useState } from "react";
+import {useState} from "react";
+import {nanoid} from "nanoid";
 
 export default function App() {
 
-    const [diceNumbers, setDiceNumbers] = useState(generateDiceNumbers)
+    const [dice, setDice] = useState(generateDice)
 
-    function generateDiceNumbers() {
+    function generateDice() {
         return new Array(10)
-            .fill(0)
-            .map(() => Math.ceil(Math.random() * 6))
+            .fill({})
+            .map(() => ({
+                    value: Math.ceil(Math.random() * 6),
+                    isHeld: false,
+                    id: nanoid()
+                })
+            )
     }
 
-    const diceComponents = diceNumbers.map(number => <Die value={number} />)
+    const diceComponents = dice.map(die => <Die key={die.id} value={die.value}/>)
 
     return (
         <main>
@@ -19,8 +25,9 @@ export default function App() {
                 {diceComponents}
             </div>
             <button className="roll-dice"
-                onClick={() => setDiceNumbers(generateDiceNumbers)}
-            >Roll</button>
+                    onClick={() => setDice(generateDice)}
+            >Roll
+            </button>
         </main>
     )
 }
