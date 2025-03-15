@@ -6,14 +6,7 @@ import Confetti from 'react-confetti'
 
 export default function App() {
 
-    /**
-     * Challenge part 2:
-     * 1. Create a new `gameWon` variable.
-     * 2. If `gameWon` is true, change the button text to
-     *    "New Game" instead of "Roll"
-     */
-
-    const [dice, setDice] = useState(generateDice)
+    const [dice, setDice] = useState(() => generateDice())
 
     const gameWon = dice.every(die => die.isHeld) &&
         dice.every(die => die.value === dice[0].value)
@@ -30,7 +23,10 @@ export default function App() {
     }
 
     function rollDice() {
-        setDice(oldDice => oldDice.map(die => die.isHeld ? die : {...die, value: Math.ceil(Math.random() * 6)}))
+        gameWon ? setDice(generateDice) : setDice(oldDice => oldDice.map(die => die.isHeld ? die : {
+            ...die,
+            value: Math.ceil(Math.random() * 6)
+        }))
     }
 
     function hold(id) {
@@ -42,7 +38,7 @@ export default function App() {
 
     return (
         <>
-            {gameWon && <Confetti />}
+            {gameWon && <Confetti/>}
             <main>
                 <h1 className="title">Tenzies</h1>
                 <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current
