@@ -1,10 +1,22 @@
 import Die from "./components/Die.jsx"
 import {useState} from "react";
 import {nanoid} from "nanoid";
+import Confetti from 'react-confetti'
+
 
 export default function App() {
 
+    /**
+     * Challenge part 2:
+     * 1. Create a new `gameWon` variable.
+     * 2. If `gameWon` is true, change the button text to
+     *    "New Game" instead of "Roll"
+     */
+
     const [dice, setDice] = useState(generateDice)
+
+    const gameWon = dice.every(die => die.isHeld) &&
+        dice.every(die => die.value === dice[0].value)
 
     function generateDice() {
         return new Array(10)
@@ -29,16 +41,20 @@ export default function App() {
                                                 hold={hold}/>)
 
     return (
-        <main>
-            <h1 className="title">Tenzies</h1>
-            <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
-            <div className="dice-container">
-                {diceComponents}
-            </div>
-            <button className="roll-dice"
-                    onClick={rollDice}
-            >Roll
-            </button>
-        </main>
+        <>
+            {gameWon && <Confetti />}
+            <main>
+                <h1 className="title">Tenzies</h1>
+                <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current
+                    value between rolls.</p>
+                <div className="dice-container">
+                    {diceComponents}
+                </div>
+                <button className="roll-dice"
+                        onClick={rollDice}
+                >{gameWon ? "New Game" : "Roll"}
+                </button>
+            </main>
+        </>
     )
 }
